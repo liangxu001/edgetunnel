@@ -4819,31 +4819,265 @@ function Clash订阅配置文件热补丁(Clash_原始订阅内容, config_JSON 
 	const gRPCUserAgentYAML = gRPCUserAgent ? JSON.stringify(gRPCUserAgent) : null;
 	let clash_yaml = Clash_原始订阅内容.replace(/mode:\s*Rule\b/g, 'mode: rule');
 
-	const baseDnsBlock = `dns:
+	const baseDnsBlock = `mixed-port: 7890
+redir-port: 7892
+tproxy-port: 7895
+bind-address: "*"
+ipv6: true
+unified-delay: true
+tcp-concurrent: true
+profile:
+  store-selected: true
+  store-fake-ip: true
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+sniffer:
   enable: true
+  sniff:
+    TLS:
+      ports:
+      - 443
+      - 8443
+    HTTP:
+      ports:
+      - 80
+      - 8080-8880
+      override-destination: true
+    QUIC:
+      ports:
+      - 443
+      - 8443
+  skip-domain:
+  - Mijia Cloud
+  - dlg.io.mi.com
+  - "+.push.apple.com"
+  - "+.googlevideo.com"
+  - "+.qq.com"
+  - "+.tencent.com"
+  - "+.wechat.com"
+  - "+.servicewechat.com"
+  - "+.gtimg.com"
+  - "+.gtimg.cn"
+  - "+.qpic.cn"
+  - "+.qlogo.cn"
+  - "+.tenpay.com"
+  - "+.myqcloud.com"
+  - "+.qcloud.com"
+  - "+.douyin.com"
+  - "+.douyincdn.com"
+  - "+.douyinpic.com"
+  - "+.douyinstatic.com"
+  - "+.douyinliving.com"
+  - "+.iesdouyin.com"
+  - "+.douyinvod.com"
+  - "+.douyinvideo.net"
+  - "+.amemv.com"
+  - "+.snssdk.com"
+  - "+.byteimg.com"
+  - "+.bytecdn.cn"
+  - "+.ibytedtos.com"
+  - "+.zijieapi.com"
+  - "+.pstatp.com"
+  - "+.toutiao.com"
+  - "+.toutiaovod.com"
+  - "+.bytedance.net"
+  - "+.xiaohongshu.com"
+  - "+.xhscdn.com"
+  - "+.xhscdn.net"
+  - "+.xhslink.com"
+  - "+.xhsimg.com"
+  - "+.taobao.com"
+  - "+.tmall.com"
+  - "+.tbcdn.cn"
+  - "+.alicdn.com"
+  - "+.alibaba.com"
+  - "+.alibabausercontent.com"
+  - "+.alipay.com"
+  - "+.alipayobjects.com"
+  - "+.goofish.com"
+  - "+.idlefish.com"
+  - "+.aliyun.com"
+  - "+.aliyuncs.com"
+  - "+.mmstat.com"
+  - "+.cainiao.com"
+  - "+.amap.com"
+  - "+.autonavi.com"
+  - "+.115.com"
+  - "+.115cdn.com"
+  - "+.115cdn.net"
+  - "+.115img.com"
+  - "+.116cd.cn"
+  - "+.116cd.com"
+  - "+.116cd.net"
+  - "+.anxia.com"
+  - "+.sq.cc"
+  - fhnfile.oss-cn-shenzhen.aliyuncs.com
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  cache-algorithm: arc
+  ipv6: true
+  prefer-ipv6: false
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter:
+  - "*.lan"
+  - "*.local"
+  - "+.localdomain"
+  - localhost.ptlogin2.qq.com
+  - "+.qq.com"
+  - "+.tencent.com"
+  - "+.wechat.com"
+  - "+.servicewechat.com"
+  - "+.gtimg.com"
+  - "+.gtimg.cn"
+  - "+.qpic.cn"
+  - "+.qlogo.cn"
+  - "+.tenpay.com"
+  - "+.myqcloud.com"
+  - "+.qcloud.com"
+  - "+.douyin.com"
+  - "+.douyincdn.com"
+  - "+.douyinpic.com"
+  - "+.douyinstatic.com"
+  - "+.douyinliving.com"
+  - "+.iesdouyin.com"
+  - "+.douyinvod.com"
+  - "+.douyinvideo.net"
+  - "+.amemv.com"
+  - "+.snssdk.com"
+  - "+.byteimg.com"
+  - "+.bytecdn.cn"
+  - "+.ibytedtos.com"
+  - "+.zijieapi.com"
+  - "+.pstatp.com"
+  - "+.toutiao.com"
+  - "+.toutiaovod.com"
+  - "+.bytedance.net"
+  - "+.xiaohongshu.com"
+  - "+.xhscdn.com"
+  - "+.xhscdn.net"
+  - "+.xhslink.com"
+  - "+.xhsimg.com"
+  - time.windows.com
+  - time.apple.com
+  - time.android.com
+  - "+.xn--ngstr-lra8j.com"
+  - "+.ntp.org.cn"
+  - "+.pool.ntp.org"
   default-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  nameserver-policy:
+    "geosite:private,cn,geolocation-cn,apple-cn,microsoft@cn,steam@cn":
     - 223.5.5.5
     - 119.29.29.29
-    - 114.114.114.114
-	- 8.8.8.8
-  use-hosts: true
+    "+.speedtest.net":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.ooklaserver.net":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.speed.cloudflare.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.measurementlab.net":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.microsoft.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.live.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.office.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.microsoftonline.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.sharepointonline.com":
+    - 223.5.5.5
+    - 119.29.29.29
+    "+.google.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.googleapis.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.googleapis.cn":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.gstatic.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.gvt1.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.gvt2.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.gvt3.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.googleusercontent.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.ggpht.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.android.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.xn--ngstr-lra8j.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.openai.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.chatgpt.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.anthropic.com":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "+.claude.ai":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
+    "geosite:geolocation-!cn":
+    - https://1.1.1.1/dns-query#PROXY
+    - https://dns.google/dns-query#PROXY
   nameserver:
-    - https://sm2.doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+  - 223.5.5.5
+  - 119.29.29.29
+  - https://dns.alidns.com/dns-query
   fallback:
-    - 8.8.4.4
-    - 208.67.220.220
+  - https://1.1.1.1/dns-query#PROXY
+  - https://dns.google/dns-query#PROXY
+  proxy-server-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  direct-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  - https://dns.alidns.com/dns-query
+  - https://doh.pub/dns-query
+  direct-nameserver-follow-policy: true
   fallback-filter:
     geoip: true
     geoip-code: CN
     ipcidr:
-      - 240.0.0.0/4
-      - 127.0.0.1/32
-      - 0.0.0.0/32
-    domain:
-      - '+.google.com'
-      - '+.facebook.com'
-      - '+.youtube.com'
+    - 240.0.0.0/4
 `;
 
 	const 添加InlineGrpcUserAgent = (text) => text.replace(/grpc-opts:\s*\{([\s\S]*?)\}/i, (all, inner) => {
