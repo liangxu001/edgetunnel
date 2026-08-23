@@ -4825,6 +4825,7 @@ function Clash订阅配置文件热补丁(Clash_原始订阅内容, config_JSON 
     - 223.5.5.5
     - 119.29.29.29
     - 114.114.114.114
+	- 8.8.8.8
   use-hosts: true
   nameserver:
     - https://sm2.doh.pub/dns-query
